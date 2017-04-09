@@ -3,6 +3,7 @@ import re
 import pandas as pd
 import pandas.io.sql as psql
 import psycopg2
+from mylist import loc_list
 
 # connect to db
 conn = psycopg2.connect(
@@ -70,9 +71,13 @@ df12 = df[df['source'].str.contains("TweetDeck")]
 df13 = df[df['source'].str.contains("Google")]
 df14 = df[df['source'].str.contains("echofon")]
 
+
 # concatenate sources
 dfs = [df1, df2, df3, df4, df5, df6, df7, df8, df9, df10, df11, df12, df13, df14]
 dffiltered = pd.concat(dfs)
+
+# filtering by location
+dfTest = df[df["user_location"].str.contains([mylist])]
 
 # number of users
 print(len(dffiltered['user_id']))
