@@ -1,6 +1,7 @@
 import pandas as pd
 import pandas.io.sql as psql
 import psycopg2
+from keys import *
 
 conn = psycopg2.connect(
     "dbname='dbsys6016' user=%s host=%s password=%s" % (user, host, password))
