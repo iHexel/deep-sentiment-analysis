@@ -2,11 +2,11 @@
 from nltk.tokenize import RegexpTokenizer
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
-from Parsing.Cleaning import dffiltered, text_clean
+from Parsing.Cleaning import df_adjusted_filtered, text_clean
 
 # Pulls in data frame created in previous sheet.
 # See README for describtion of process
-df = dffiltered
+df = df_adjusted_filtered
 
 
 def process(text, lang):
