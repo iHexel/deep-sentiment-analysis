@@ -82,7 +82,6 @@ dffiltered = pd.concat(dfs)
 # filtering by location
 dfTest = df[df["user_location"].str.contains([mylist])]
 
-dffiltered = primary.head(5)
 # convert string to datetime object
 dffiltered['created_at'] = pd.to_datetime(dffiltered['created_at'])
 
