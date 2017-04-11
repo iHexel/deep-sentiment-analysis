@@ -6,7 +6,8 @@ import pandas as pd
 from datetime import datetime
 import pandas.io.sql as psql
 from pytz import timezone
-from mylist import loc_list
+from keys import *
+from keywords_and_dicts import *
 
 # connect to db
 conn = psycopg2.connect(
@@ -79,10 +80,18 @@ df14 = df[df['source'].str.contains("echofon")]
 dfs = [df1, df2, df3, df4, df5, df6, df7, df8, df9, df10, df11, df12, df13, df14]
 dffiltered = pd.concat(dfs)
 
-# filtering by location
-dfTest = df[df["user_location"].str.contains([mylist])]
+# filter by location
+dffiltered = dffiltered[dffiltered['user_location'].str.contains(keywords)]
 
-dffiltered = primary.head(5)
+# subset location to matched keywords
+dffiltered['user_location'] = dffiltered['user_location'].apply(lambda row: keywords.findall(row)[0].strip())
+
+# map matched keywords to a state within USA
+dffiltered['user_location'] = dffiltered['user_location'].map(state_dict)
+
+# create a timezone column based on user_location value
+dffiltered['timezone'] = dffiltered['user_location'].map(tz_dict)
+
 # convert string to datetime object
 dffiltered['created_at'] = pd.to_datetime(dffiltered['created_at'])
 
