@@ -15,7 +15,7 @@ conn = psycopg2.connect(
 
 # pull in data
 df = psql.read_sql(
-    "SELECT * FROM usa_primary LIMIT 1000", conn)
+    "SELECT * FROM usa_primary LIMIT 100000", conn)
 
 # functions
 
@@ -84,7 +84,7 @@ dffiltered = pd.concat(dfs)
 dffiltered = dffiltered[dffiltered['user_location'].str.contains(keywords)]
 
 # subset location to matched keywords
-dffiltered['user_location'] = dffiltered['user_location'].apply(lambda row: keywords.findall(row)[0].strip())
+dffiltered['user_location'] = dffiltered['user_location'].apply(lambda row: keywords.findall(row)[0].lower().strip())
 
 # map matched keywords to a state within USA
 dffiltered['user_location'] = dffiltered['user_location'].map(state_dict)
@@ -150,5 +150,7 @@ df_adjusted_filtered['text'] = df_adjusted_filtered['text'].apply(str)
 # stripping non text characters ie @, # ,https://, ect
 df_adjusted_filtered['cleaned_text'] = df_adjusted_filtered['text'].apply(text_clean)
 
+df_adjusted_filtered
+
 # free up memory
-del df1, df2, df3, df4, df5, df6, df7, df8, df9, df10, df11, d12, d13, d14
+del df1, df2, df3, df4, df5, df6, df7, df8, df9, df10, df11, df12, df13, df14
