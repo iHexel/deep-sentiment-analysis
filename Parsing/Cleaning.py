@@ -6,6 +6,9 @@ import pandas as pd
 from datetime import datetime
 import pandas.io.sql as psql
 from pytz import timezone
+
+# local modules
+from Parsing_Functions import text_clean, findandreplace
 from keys import *
 from keywords_and_dicts import *
 
@@ -16,29 +19,6 @@ conn = psycopg2.connect(
 # pull in data
 df = psql.read_sql(
     "SELECT * FROM usa_primary LIMIT 100000", conn)
-
-# functions
-
-
-def text_clean(dirtytext):
-    """
-    Clean text by stripping out unnecessary characters.
-    Parameters
-    ----------
-    dirtytext : The text to be cleaned.
-    """
-    tmp = re.sub("'", '', dirtytext)
-    tmp = re.sub(",", '', tmp)
-    tmp = re.sub(r"(@\S*)|(https?://\S*)", " ", tmp)
-    tmp = ' '.join(re.sub(r"(\w+:\/\/\S+)", " ", tmp).split())
-    tmp = re.sub(r'[\s]+', ' ', tmp)
-    tmp = re.sub(r'[^\w]', ' ', tmp)
-    tmp = re.sub(' +', ' ', tmp)
-    tmp = re.sub('[1|2|3|4|5|6|7|8|9|0]', '', tmp)
-    tmp = re.sub('nan', ' ', tmp)
-    tmp = tmp.lower()
-    return tmp
-
 
 # recasting
 df['id'] = df['id'].apply(str)
@@ -84,7 +64,8 @@ dffiltered = pd.concat(dfs)
 dffiltered = dffiltered[dffiltered['user_location'].str.contains(keywords)]
 
 # subset location to matched keywords
-dffiltered['user_location'] = dffiltered['user_location'].apply(lambda row: keywords.findall(row)[0].lower().strip())
+dffiltered['user_location'] = dffiltered['user_location'].apply(
+    lambda row: keywords.findall(row)[0].lower().strip())
 
 # map matched keywords to a state within USA
 dffiltered['user_location'] = dffiltered['user_location'].map(state_dict)
@@ -150,7 +131,8 @@ df_adjusted_filtered['text'] = df_adjusted_filtered['text'].apply(str)
 # stripping non text characters ie @, # ,https://, ect
 df_adjusted_filtered['cleaned_text'] = df_adjusted_filtered['text'].apply(text_clean)
 
-df_adjusted_filtered
+# converting variations of a word with trump to just trump ie realdonaldtrump to trump
+df_adjusted_filtered['cleaned_text'] = df_adjusted_filtered['cleaned_text'].apply(lambda row: findandreplace(row, "trump", "trump")
 
 # free up memory
 del df1, df2, df3, df4, df5, df6, df7, df8, df9, df10, df11, df12, df13, df14
