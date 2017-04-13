@@ -90,13 +90,13 @@ def process(text, lang):
     lemmatizer = WordNetLemmatizer()
 
     # remove case
-    text = text.lower()
+    # text = text
 
     # tokenizing
-    words = tokenizer.tokenize(text)
+    # words = tokenizer.tokenize(text)
 
     # lemmantizing
-    lemmed_tokenized_words = [lemmatizer.lemmatize(i) for i in words]
+    lemmed_tokenized_words = [lemmatizer.lemmatize(i) for i in text]
 
     # stop words
     stop_words = [i for i in lemmed_tokenized_words if i not in lang]
