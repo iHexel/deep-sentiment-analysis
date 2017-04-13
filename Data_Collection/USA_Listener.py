@@ -83,12 +83,10 @@ if __name__ == '__main__':
             api = tweepy.API(auth)
             # initialize Stream object with a time out limit
             twitterStream = Stream(auth=api.auth, listener=listener())
-            # set bounding box filter and track specific phrases
-            phrases_of_interest = [Donald, trump, donaldtrump, realdonaldtrump,
-                                   makeamericagreatagain, notmypresident, president, whitehouse]
-            twitterStream.filter(track=phrases_of_interest,
-                                 locations=[-125.0011, 24.9493, -66.9326, 49.5904])
-            # Instanbul
+
+            # track specific phrases
+            twitterStream.filter(track='trump')
+
         # various exception handling blocks
         except KeyboardInterrupt:
             sys.exit()
