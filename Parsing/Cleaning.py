@@ -83,7 +83,6 @@ dffiltered['created_at'] = dffiltered['created_at'].apply(lambda row: pytz.utc.l
 # eastern time zone
 df_eastern = dffiltered[dffiltered['timezone'] == "Eastern"]
 eastern = timezone('US/Eastern')
-df_eastern = dffiltered
 df_eastern['adjusted_created_at'] = df_eastern['created_at'].apply(
     lambda row: row.astimezone(eastern))
 
@@ -132,7 +131,8 @@ df_adjusted_filtered['text'] = df_adjusted_filtered['text'].apply(str)
 df_adjusted_filtered['cleaned_text'] = df_adjusted_filtered['text'].apply(text_clean)
 
 # converting variations of a word with trump to just trump ie realdonaldtrump to trump
-df_adjusted_filtered['cleaned_text'] = df_adjusted_filtered['cleaned_text'].apply(lambda row: findandreplace(row, "trump", "trump")
+df_adjusted_filtered['cleaned_text'] = df_adjusted_filtered[
+    'cleaned_text'].apply(lambda row: findandreplace(row, "trump", "trump"))
 
 # free up memory
 del df1, df2, df3, df4, df5, df6, df7, df8, df9, df10, df11, df12, df13, df14
