@@ -1,0 +1,35 @@
+CREATE TABLE USA_primary(
+created_at TEXT,
+id BIGINT PRIMARY KEY,
+source TEXT,
+text TEXT,
+text_lang TEXT,
+user_id BIGINT,
+user_location TEXT,
+user_handle TEXT,
+user_lang TEXT
+);
+
+CREATE TABLE USA_secondary(
+id BIGINT PRIMARY KEY,
+long TEXT,
+lat TEXT
+);
+
+CREATE TABLE USA_user_desc(
+id BIGINT PRIMARY KEY,
+user_id BIGINT,
+user_desc TEXT
+);
+
+CREATE TABLE USA_quoted(
+id BIGINT PRIMARY KEY,
+q_id TEXT,
+q_created_at TEXT,
+q_text TEXT,
+q_text_lang TEXT,
+q_user_id BIGINT,
+q_user_location TEXT,
+q_user_handle TEXT,
+q_user_lang TEXT
+);
