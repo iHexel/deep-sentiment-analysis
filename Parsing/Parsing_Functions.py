@@ -21,7 +21,7 @@ def text_clean(dirtytext):
 
     # replacing @ sign with just the person's username its directed too
     # also stripping links
-    tmp = re.sub(r"(@)|(https?://\S*)", " ", tmp)
+    tmp = re.sub(r"(@\S*)|(https?://\S*)", " ", tmp)
 
     #
     tmp = ' '.join(re.sub(r"(\w+:\/\/\S+)", " ", tmp).split())
@@ -40,6 +40,12 @@ def text_clean(dirtytext):
 
     # if empty we just want it to be empty
     tmp = re.sub('nan', ' ', tmp)
+
+    # retweets text thrown out
+    tmp = re.sub('rt|RT', '', tmp)
+
+    # filter out word youtube
+    tmp = re.sub('youtube', '', tmp)
 
     # lowercase the results
     tmp = tmp.lower()

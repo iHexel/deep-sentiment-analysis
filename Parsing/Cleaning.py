@@ -31,6 +31,8 @@ df['user_lang'] = df['user_lang'].apply(str)
 df['source'] = df['source'].apply(str)
 
 # filter out job bots, weather bots, geo bots, ect
+df = df[~df['text'].str.contains("I liked a @Youtube video")]
+df = df[~df['text'].str.contains("I added a video to a @Youtube playlist")]
 df = df[~df['source'].str.contains("TweetMYJOBS")]
 df = df[~df['source'].str.contains("tweetmyjobs")]
 df = df[~df['text'].str.contains("Want to work in")]
@@ -54,7 +56,6 @@ df11 = df[df['source'].str.contains("facebook")]
 df12 = df[df['source'].str.contains("TweetDeck")]
 df13 = df[df['source'].str.contains("Google")]
 df14 = df[df['source'].str.contains("echofon")]
-
 
 # concatenate sources
 dfs = [df1, df2, df3, df4, df5, df6, df7, df8, df9, df10, df11, df12, df13, df14]
