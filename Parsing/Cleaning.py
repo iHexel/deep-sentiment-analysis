@@ -108,6 +108,11 @@ df_central['adjusted_created_at'] = df_central['created_at'].apply(
 # concatenate the timezone dataframes
 df_adjusted_filtered = pd.concat([df_central, df_eastern, df_mountain, df_pacific])
 
+# grab date of day
+df_adjusted_filtered['Day'] = df_adjusted_filtered[
+    'adjusted_created_at'].apply(lambda row: str(row)[8:10])
+
+
 # handling @,#, and URL's
 # Create empty lists for each category.
 mentions = []
