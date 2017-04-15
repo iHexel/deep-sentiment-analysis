@@ -10,8 +10,7 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 sid = SentimentIntensityAnalyzer()
 
 # grab keys of dictionary
-states = statewide_similar_words.keys()
-days = daily_similar_words.keys()
+combos = state_day_similar_words.keys()
 
 # Initialize an approval ratings Series
 approval_rating_series = pd.Series()
@@ -19,11 +18,11 @@ approval_rating_series = pd.Series()
 # Initialize a disapproval ratings Series
 disapproval_rating_series = pd.Series()
 
-# loop through all states
-for state in states:
+# loop through all combos
+for combo in combos:
 
     # check if length of list of words for a given state is 0, skip if true
-    if len(statewide_similar_words[state]) == 0:
+    if len(state_day_similar_words[combo]) == 0:
         continue
 
     # Initialize lists
@@ -31,10 +30,10 @@ for state in states:
     negative_words = []
 
     # loop through the length of the list
-    for i in range(len(statewide_similar_words[state])):
+    for i in range(len(state_day_similar_words[combo])):
 
         # grab an element of list and then grab the first element of that element
-        tmp = statewide_similar_words[state][i][0]
+        tmp = state_day_similar_words[combo][i][0]
 
         # score the word
         scores = sid.polarity_scores(tmp)
@@ -60,6 +59,6 @@ for state in states:
     disapproval_rating = negative / (positive + negative)
 
     # append the new results as a series to the original series
-    approval_rating_series = approval_rating_series.append(pd.Series(approval_rating, index=[state]))
+    approval_rating_series = approval_rating_series.append(pd.Series(approval_rating, index=[combo]))
     disapproval_rating_series = disapproval_rating_series.append(
-        pd.Series(disapproval_rating, index=[state]))
+        pd.Series(disapproval_rating, index=[combo]))
