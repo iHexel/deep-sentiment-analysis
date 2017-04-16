@@ -16,7 +16,7 @@ df = df_adjusted_filtered
 english = stopwords.words('english')
 
 # applying function to dataframe
-df_en = df[df['user_lang'] == 'en']
+df_en = df[df['user_lang'] == 'en'].reset_index(drop=True)
 df_en['cleaned_text'] = df_en['cleaned_text'].apply(lambda row: process(row, english))
 
 # free up memory

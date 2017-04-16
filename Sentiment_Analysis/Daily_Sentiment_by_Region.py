@@ -10,7 +10,7 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 sid = SentimentIntensityAnalyzer()
 
 # grab keys of dictionary
-combos = state_day_similar_words.keys()
+combos = region_similar_words.keys()
 
 # Initialize an approval ratings Series
 approval_rating_series = pd.Series()
@@ -22,7 +22,7 @@ disapproval_rating_series = pd.Series()
 for combo in combos:
 
     # check if length of list of words for a given state is 0, skip if true
-    if len(state_day_similar_words[combo]) == 0:
+    if len(region_similar_words[combo]) == 0:
         continue
 
     # Initialize lists
@@ -30,10 +30,10 @@ for combo in combos:
     negative_words = []
 
     # loop through the length of the list
-    for i in range(len(state_day_similar_words[combo])):
+    for i in range(len(region_similar_words[combo])):
 
         # grab an element of list and then grab the first element of that element
-        tmp = state_day_similar_words[combo][i][0]
+        tmp = region_similar_words[combo][i][0]
 
         # score the word
         scores = sid.polarity_scores(tmp)

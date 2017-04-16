@@ -6,21 +6,21 @@ logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s',
 
 # Set values for various parameters
 num_features = 300    # Word vector dimensionality
-min_word_count = 10   # Minimum word count
+min_word_count = 40   # Minimum word count
 num_workers = 4       # Number of threads to run in parallel
 context = 4          # Context window size
 downsampling = 1e-3   # Downsample setting for frequent words
 
 # list of unique combinations of days and states
-combos = list(set(zip(df_en.Day, df_en.user_location)))
+combos = list(set(zip(df_en.Day, df_en.region)))
 
 # dictionary with state as key and a list of words as values
-state_day_similar_words = dict.fromkeys(combos)
+region_similar_words = dict.fromkeys(combos)
 
 # loop through all unique states
 for combo in combos:
     # subset by state
-    tmpdf = df_en[(df_en['Day']==combo[0]) & (df_en['user_location']==combo[1])]
+    tmpdf = df_en[(df_en['Day']==combo[0]) & (df_en['region']==combo[1])]
 
     # create new vector of just the text
     sentences = tmpdf['cleaned_text']
@@ -33,4 +33,4 @@ for combo in combos:
     model.init_sims(replace=True)
 
     # save the resulting words to a dictionary with the key being the state
-    statewide_similar_words[combo] = model.most_similar_cosmul("trump", topn=50)
+    region_similar_words[combo] = model.most_similar_cosmul("trump", topn=50)
