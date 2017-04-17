@@ -12,7 +12,7 @@ context = 4          # Context window size
 downsampling = 1e-3   # Downsample setting for frequent words
 
 # list of unique days
-days = (df_en.Day.unique()).tolist()
+days = df_en.Day.unique().tolist()
 
 # dictionary with day as key and a list of words as values
 daily_similar_words = dict.fromkeys(days)
@@ -33,4 +33,4 @@ for i in days:
     model.init_sims(replace=True)
 
     # save the resulting words to a dictionary with the key being the day
-    daily_similar_words[i] = model.most_similar_cosmul("trump", topn=50)
+    daily_similar_words[i] = model.most_similar_cosmul("trump", topn=1000)

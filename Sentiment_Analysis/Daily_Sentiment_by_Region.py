@@ -1,4 +1,5 @@
 """Measuring Sentiment of Tweets by State (Overall)"""
+import pandas as pd
 import nltk
 from nltk.sentiment import SentimentAnalyzer
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
