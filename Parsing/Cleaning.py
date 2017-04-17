@@ -61,15 +61,24 @@ df14 = df[df['source'].str.contains("echofon")]
 dfs = [df1, df2, df3, df4, df5, df6, df7, df8, df9, df10, df11, df12, df13, df14]
 dffiltered = pd.concat(dfs)
 
+# free up memory
+del df1, df2, df3, df4, df5, df6, df7, df8, df9, df10, df11, df12, df13, df14, dfs, df
+
 # filter by location
-dffiltered = dffiltered[dffiltered['user_location'].str.contains(keywords)]
+dffiltered = dffiltered[dffiltered['user_location'].str.contains('None')==False].reset_index(drop=True)
+dffiltered['user_location'] = dffiltered['user_location'].str.lower()
+dffiltered = dffiltered[dffiltered['user_location'].str.contains(keywords)].reset_index(drop=True)
 
 # subset location to matched keywords
 dffiltered['user_location'] = dffiltered['user_location'].apply(
-    lambda row: keywords.findall(row)[0].lower().strip())
+    lambda row: keywords.findall(row)[0].strip())
 
 # map matched keywords to a state within USA
 dffiltered['user_location'] = dffiltered['user_location'].map(state_dict)
+dffiltered = dffiltered.dropna(axis=0).reset_index(drop=True)
+
+# map state to a region
+dffiltered['region'] = dffiltered['user_location'].map(reg_dict)
 
 # create a timezone column based on user_location value
 dffiltered['timezone'] = dffiltered['user_location'].map(tz_dict)
@@ -105,13 +114,27 @@ central = timezone('US/Central')
 df_central['adjusted_created_at'] = df_central['created_at'].apply(
     lambda row: row.astimezone(central))
 
+# alaskan time zone
+df_alaskan = dffiltered[dffiltered['timezone'] == "Alaskan"]
+alaskan = timezone('US/Alaska')
+df_alaskan['adjusted_created_at'] = df_alaskan['created_at'].apply(
+    lambda row: row.astimezone(alaskan))
+
+# hawaiian time zone
+df_hawaiian = dffiltered[dffiltered['timezone'] == "Hawaiian"]
+hawaiian = timezone('US/Hawaii')
+df_hawaiian['adjusted_created_at'] = df_hawaiian['created_at'].apply(
+    lambda row: row.astimezone(hawaiian))
+
 # concatenate the timezone dataframes
-df_adjusted_filtered = pd.concat([df_central, df_eastern, df_mountain, df_pacific])
+df_adjusted_filtered = pd.concat([df_central, df_eastern, df_mountain, df_pacific, df_alaskan, df_hawaiian]).reset_index(drop=True)
+
+# free up memory
+del df_central, df_eastern, df_mountain, df_pacific, df_alaskan, df_hawaiian
 
 # grab date of day
 df_adjusted_filtered['Day'] = df_adjusted_filtered[
     'adjusted_created_at'].apply(lambda row: str(row)[8:10])
-
 
 # handling @,#, and URL's
 # Create empty lists for each category.
@@ -139,6 +162,3 @@ df_adjusted_filtered['cleaned_text'] = df_adjusted_filtered['text'].apply(text_c
 # converting variations of a word with trump to just trump ie realdonaldtrump to trump
 df_adjusted_filtered['cleaned_text'] = df_adjusted_filtered[
     'cleaned_text'].apply(lambda row: findandreplace(row, "trump", "trump"))
-
-# free up memory
-del df1, df2, df3, df4, df5, df6, df7, df8, df9, df10, df11, df12, df13, df14

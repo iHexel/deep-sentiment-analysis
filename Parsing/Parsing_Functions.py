@@ -101,10 +101,10 @@ def process(text, lang):
     # tokenizing
     # words = tokenizer.tokenize(text)
 
-    # lemmantizing
-    lemmed_tokenized_words = [lemmatizer.lemmatize(i) for i in text]
-
     # stop words
-    stop_words = [i for i in lemmed_tokenized_words if i not in lang]
+    stop_words = [i for i in text if i not in lang]
 
-    return stop_words
+    # lemmantizing
+    lemmed_tokenized_words = [lemmatizer.lemmatize(i) for i in stop_words]
+
+    return lemmed_tokenized_words

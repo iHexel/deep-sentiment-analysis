@@ -1,4 +1,4 @@
-"""Preliminary Word2Vec modeling for each day in time period."""
+"""Word2Vec modeling for each state in country by day"""
 import logging
 from gensim.models import Word2Vec
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s',
@@ -11,16 +11,16 @@ num_workers = 4       # Number of threads to run in parallel
 context = 4          # Context window size
 downsampling = 1e-3   # Downsample setting for frequent words
 
-# list of unique days
-days = df_en.Day.unique().tolist()
+# list of unique combinations of days and states
+combos = list(set(zip(df_en.Day, df_en.region)))
 
-# dictionary with day as key and a list of words as values
-daily_similar_words = dict.fromkeys(days)
+# dictionary with state as key and a list of words as values
+region_similar_words = dict.fromkeys(combos)
 
-# loop through all unique days
-for i in days:
-    # subset by day
-    tmpdf = df_en[df_en['Day'] == i]
+# loop through all unique states
+for combo in combos:
+    # subset by state
+    tmpdf = df_en[(df_en['Day']==combo[0]) & (df_en['region']==combo[1])]
 
     # create new vector of just the text
     sentences = tmpdf['cleaned_text']
@@ -32,5 +32,5 @@ for i in days:
     # makes the model more memory efficient
     model.init_sims(replace=True)
 
-    # save the resulting words to a dictionary with the key being the day
-    daily_similar_words[i] = model.most_similar_cosmul("trump", topn=2000)
+    # save the resulting words to a dictionary with the key being the state
+    region_similar_words[combo] = model.most_similar_cosmul("trump", topn=2000)
