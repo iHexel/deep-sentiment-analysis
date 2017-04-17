@@ -1,4 +1,5 @@
 """Measuring Sentiment of Tweets by Day"""
+import pandas as pd
 import nltk
 from nltk.sentiment import SentimentAnalyzer
 from nltk.sentiment.vader import SentimentIntensityAnalyzer

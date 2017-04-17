@@ -20,7 +20,7 @@ region_similar_words = dict.fromkeys(combos)
 # loop through all unique states
 for combo in combos:
     # subset by state
-    tmpdf = df_en[(df_en['Day']==combo[0]) & (df_en['region']==combo[1])]
+    tmpdf = df_en[(df_en['Day'] == combo[0]) & (df_en['region'] == combo[1])]
 
     # create new vector of just the text
     sentences = tmpdf['cleaned_text']
