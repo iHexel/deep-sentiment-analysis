@@ -33,4 +33,4 @@ for i in days:
     model.init_sims(replace=True)
 
     # save the resulting words to a dictionary with the key being the day
-    daily_similar_words[i] = model.most_similar_cosmul("trump", topn=1000)
+    daily_similar_words[i] = model.most_similar_cosmul("trump", topn=2000)

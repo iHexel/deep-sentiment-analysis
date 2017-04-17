@@ -33,4 +33,4 @@ for combo in combos:
     model.init_sims(replace=True)
 
     # save the resulting words to a dictionary with the key being the state
-    region_similar_words[combo] = model.most_similar_cosmul("trump", topn=50)
+    region_similar_words[combo] = model.most_similar_cosmul("trump", topn=2000)
