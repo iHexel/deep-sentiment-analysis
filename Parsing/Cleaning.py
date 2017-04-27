@@ -2,6 +2,7 @@
 import re
 import psycopg2
 import pytz
+import logging
 import pandas as pd
 from datetime import datetime
 import pandas.io.sql as psql
@@ -12,13 +13,16 @@ from Parsing_Functions import text_clean, findandreplace
 from keys import *
 from keywords_and_dicts import *
 
+# log updates
+logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+
 # connect to db
 conn = psycopg2.connect(
     "dbname='dbsys6016' user=%s host=%s password=%s" % (user, host, password))
 
 # pull in data
 df = psql.read_sql(
-    "SELECT * FROM usa_primary LIMIT 100000", conn)
+    "SELECT * FROM usa_primary LIMIT", conn)
 
 # recasting
 df['id'] = df['id'].apply(str)
@@ -65,7 +69,8 @@ dffiltered = pd.concat(dfs)
 del df1, df2, df3, df4, df5, df6, df7, df8, df9, df10, df11, df12, df13, df14, dfs, df
 
 # filter by location
-dffiltered = dffiltered[dffiltered['user_location'].str.contains('None')==False].reset_index(drop=True)
+dffiltered = dffiltered[dffiltered['user_location'].str.contains(
+    'None') == False].reset_index(drop=True)
 dffiltered['user_location'] = dffiltered['user_location'].str.lower()
 dffiltered = dffiltered[dffiltered['user_location'].str.contains(keywords)].reset_index(drop=True)
 
@@ -127,7 +132,8 @@ df_hawaiian['adjusted_created_at'] = df_hawaiian['created_at'].apply(
     lambda row: row.astimezone(hawaiian))
 
 # concatenate the timezone dataframes
-df_adjusted_filtered = pd.concat([df_central, df_eastern, df_mountain, df_pacific, df_alaskan, df_hawaiian]).reset_index(drop=True)
+df_adjusted_filtered = pd.concat(
+    [df_central, df_eastern, df_mountain, df_pacific, df_alaskan, df_hawaiian]).reset_index(drop=True)
 
 # free up memory
 del df_central, df_eastern, df_mountain, df_pacific, df_alaskan, df_hawaiian
