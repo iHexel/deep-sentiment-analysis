@@ -23,8 +23,9 @@ plt.ylabel('Approval Rating', fontsize=8)
 plt.ylim()
 
 fig = valid_approval.plot(label="Valid")
-fig = approval_rating_series.rolling(window=3, center=False).mean().plot(
-    color='#fc8d62', linestyle='dashed', label='Word2Vec Rolling 3 Day Mean')
+fig = approval_rating_series.plot(label="Word2Vec")
+# fig = approval_rating_series.rolling(window=3, center=False).mean().plot(
+#     color='#fc8d62', linestyle='dashed', label='Word2Vec Rolling 3 Day Mean')
 fig = ts.legend(loc='best')
 
 ####### Disapproval Ratings #######

@@ -2,6 +2,7 @@
 import re
 import psycopg2
 import pytz
+import logging
 import pandas as pd
 from datetime import datetime
 import pandas.io.sql as psql
@@ -12,13 +13,16 @@ from Parsing_Functions import text_clean, findandreplace
 from keys import *
 from keywords_and_dicts import *
 
+# log updates
+logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+
 # connect to db
 conn = psycopg2.connect(
     "dbname='dbsys6016' user=%s host=%s password=%s" % (user, host, password))
 
 # pull in data
 df = psql.read_sql(
-    "SELECT * FROM usa_primary", conn)
+    "SELECT * FROM usa_primary LIMIT", conn)
 
 # recasting
 df['id'] = df['id'].apply(str)
