@@ -15,12 +15,10 @@ from Deep_Sentiment_Analysis.Sentiment_Analysis.Daily_Sentiment import approval_
 approval_rating_series.sort_index(inplace=True)
 disapproval_rating_series.sort_index(inplace=True)
 
-
-from scipy import signal
-corr = signal.correlate(approval_rating_series, valid_approval)
-
 fig = plt.figure()
 ax1 = fig.add_subplot(211)
+
+#cross correlations
 ax1.xcorr(approval_rating_series, valid_approval,
           usevlines=True, normed=True, lw=2)
 ax1.grid(True)
