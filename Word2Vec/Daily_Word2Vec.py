@@ -20,7 +20,7 @@ daily_similar_words = dict.fromkeys(days)
 # loop through all unique days
 for i in days:
     # subset by day
-    tmpdf = df_en[df_en['Day'] == i]
+    tmpdf = df_en[df_en['Day'] == "30"]
 
     # create new vector of just the text
     sentences = tmpdf['cleaned_text']
@@ -33,4 +33,4 @@ for i in days:
     model.init_sims(replace=True)
 
     # save the resulting words to a dictionary with the key being the day
-    daily_similar_words[i] = model.most_similar_cosmul("trump", topn=2000)
+    daily_similar_words = model.most_similar_cosmul("trump", topn=2000)

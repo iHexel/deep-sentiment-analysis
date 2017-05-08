@@ -1,4 +1,4 @@
-"""Word2Vec modeling for each state in country by day"""
+"""Word2Vec modeling for each region in country by day"""
 import logging
 from gensim.models import Word2Vec
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s',

@@ -1,4 +1,4 @@
-"""Measuring Sentiment of Tweets by State (Overall)"""
+"""Measuring Sentiment of Tweets by Region (Daily)"""
 import pandas as pd
 import nltk
 from nltk.sentiment import SentimentAnalyzer

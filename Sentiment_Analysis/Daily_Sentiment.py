@@ -52,6 +52,7 @@ for day in days:
     disapproval_rating = negative / (positive + negative)
 
     # append the new results as a series to the original series
-    approval_rating_series = approval_rating_series.append(pd.Series(approval_rating, index=[day]))
+    approval_rating_series = approval_rating_series.append(
+        pd.Series(approval_rating, index=[day]))
     disapproval_rating_series = disapproval_rating_series.append(
         pd.Series(disapproval_rating, index=[day]))

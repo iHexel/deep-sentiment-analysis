@@ -21,8 +21,7 @@ conn = psycopg2.connect(
     "dbname='dbsys6016' user=%s host=%s password=%s" % (user, host, password))
 
 # pull in data
-df = psql.read_sql(
-    "SELECT * FROM usa_primary LIMIT", conn)
+df = psql.read_sql("SELECT * FROM usa_primary", conn)
 
 # recasting
 df['id'] = df['id'].apply(str)
@@ -61,12 +60,15 @@ df12 = df[df['source'].str.contains("TweetDeck")]
 df13 = df[df['source'].str.contains("Google")]
 df14 = df[df['source'].str.contains("echofon")]
 
+# free up memory
+del df
+
 # concatenate sources
 dfs = [df1, df2, df3, df4, df5, df6, df7, df8, df9, df10, df11, df12, df13, df14]
 dffiltered = pd.concat(dfs)
 
 # free up memory
-del df1, df2, df3, df4, df5, df6, df7, df8, df9, df10, df11, df12, df13, df14, dfs, df
+del df1, df2, df3, df4, df5, df6, df7, df8, df9, df10, df11, df12, df13, df14, dfs
 
 # filter by location
 dffiltered = dffiltered[dffiltered['user_location'].str.contains(
@@ -136,7 +138,7 @@ df_adjusted_filtered = pd.concat(
     [df_central, df_eastern, df_mountain, df_pacific, df_alaskan, df_hawaiian]).reset_index(drop=True)
 
 # free up memory
-del df_central, df_eastern, df_mountain, df_pacific, df_alaskan, df_hawaiian
+del df_central, df_eastern, df_mountain, df_pacific, df_alaskan, df_hawaiian, dffiltered
 
 # grab date of day
 df_adjusted_filtered['Day'] = df_adjusted_filtered[
